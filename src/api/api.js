@@ -1,52 +1,110 @@
+// // frontend/src/api/api.js
+// import axios from "axios";
+
+// const API_BASE = "http://127.0.0.1:8000";
+
+// // -------------------------------
+// // SALES LEADS
+// // -------------------------------
+// export async function getSalesLeads() {
+//     const res = await axios.get(`${API_BASE}/leads/`);
+//     return res.data;
+// }
+
+// // -------------------------------
+// // PACKAGING
+// // -------------------------------
+// export async function getPackaging() {
+//     const res = await axios.get(`${API_BASE}/packaging/`);
+//     return res.data;
+// }
+
+// // -------------------------------
+// // COSTINGS LIST
+// // -------------------------------
+// export async function getCostings(projectCode = "") {
+//     const res = await axios.get(`${API_BASE}/costings/`, {
+//         params: { project_code: projectCode }
+//     });
+//     return res.data;
+// }
+
+// // -------------------------------
+// // CREATE COSTING  ✅ FIXED
+// // -------------------------------
+// export async function createCosting(form) {
+//     const fd = new FormData();
+
+//     Object.keys(form).forEach((key) => {
+//         if (Array.isArray(form[key])) {
+//             form[key].forEach(v => fd.append(key, v));
+//         } else if (form[key] !== null && form[key] !== undefined) {
+//             fd.append(key, form[key]);
+//         }
+//     });
+
+//     const res = await axios.post(
+//         `${API_BASE}/costing/new/`,
+//         fd,
+//         { withCredentials: true }
+//     );
+//     return res.data;
+// }
+
 // frontend/src/api/api.js
 import axios from "axios";
 
-const API_BASE = "http://127.0.0.1:8000";
+/**
+ * API base URL
+ * - Local dev → http://127.0.0.1:8000
+ * - Production (Netlify) → https://vcpl-backend.onrender.com
+ */
+const API_BASE =
+  process.env.REACT_APP_API_URL || "http://127.0.0.1:8000";
 
 // -------------------------------
 // SALES LEADS
 // -------------------------------
 export async function getSalesLeads() {
-    const res = await axios.get(`${API_BASE}/leads/`);
-    return res.data;
+  const res = await axios.get(`${API_BASE}/leads/`);
+  return res.data;
 }
 
 // -------------------------------
 // PACKAGING
 // -------------------------------
 export async function getPackaging() {
-    const res = await axios.get(`${API_BASE}/packaging/`);
-    return res.data;
+  const res = await axios.get(`${API_BASE}/packaging/`);
+  return res.data;
 }
 
 // -------------------------------
 // COSTINGS LIST
 // -------------------------------
 export async function getCostings(projectCode = "") {
-    const res = await axios.get(`${API_BASE}/costings/`, {
-        params: { project_code: projectCode }
-    });
-    return res.data;
+  const res = await axios.get(`${API_BASE}/costings/`, {
+    params: projectCode ? { project_code: projectCode } : {},
+  });
+  return res.data;
 }
 
 // -------------------------------
-// CREATE COSTING  ✅ FIXED
+// CREATE COSTING
 // -------------------------------
 export async function createCosting(form) {
-    const fd = new FormData();
+  const fd = new FormData();
 
-    Object.keys(form).forEach((key) => {
-        if (Array.isArray(form[key])) {
-            form[key].forEach(v => fd.append(key, v));
-        } else if (form[key] !== null && form[key] !== undefined) {
-            fd.append(key, form[key]);
-        }
-    });
+  Object.keys(form).forEach((key) => {
+    if (Array.isArray(form[key])) {
+      form[key].forEach((v) => fd.append(key, v));
+    } else if (form[key] !== null && form[key] !== undefined) {
+      fd.append(key, form[key]);
+    }
+  });
 
-    const res = await axios.post(
-        `${API_BASE}/costing/new/`,
-        fd,
-        { withCredentials: true }
-    );
-    return res.data;
+  const res = await axios.post(`${API_BASE}/costing/new/`, fd, {
+    withCredentials: true,
+  });
+
+  return res.data;
 }
