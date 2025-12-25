@@ -1,0 +1,30 @@
+/* App.css - replace entire file with this */
+
+/* Layout */
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* Sidebar is fixed; content must offset to the right */
+.content {
+  /* default margin to make room for full-size sidebar */
+  margin-left: 230px;
+  padding: 30px;
+  background: #f5f5f5;
+  min-height: 100vh;
+  box-sizing: border-box;
+  transition: margin-left 0.25s ease;
+}
+
+/* When body has class sidebar-collapsed, content moves left */
+body.sidebar-collapsed .content {
+  margin-left: 80px;
+}
+
+/* small utility */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
